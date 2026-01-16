@@ -1,0 +1,15 @@
+.notification-item:hover {
+  background-color: #e8f4ff !important;
+}
+
+.clear-all-item:hover {
+  background-color: #fff5f7 !important;
+}
+
+.notification-item {
+  transition: all 0.2s ease;
+}
+
+.notification-item:active {
+  transform: scale(0.98);
+}
