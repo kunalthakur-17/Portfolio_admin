@@ -11,7 +11,9 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/protectedPage/Dashbord/Dashbord";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/protectedPage/Blog/Blog";
+import BlogDetail from "./pages/protectedPage/Blog/BlogDetail/BlogDetail";
 import Work from "./pages/protectedPage/Work/Work";
+import WorkDetail from "./pages/protectedPage/Work/WorkDetail/WorkDetail";
 
 function ScrollToHash() {
   const location = useLocation();
@@ -46,33 +48,9 @@ function ScrollToHash() {
 }
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Check for saved dark mode preference
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode") === "true";
-    setIsDarkMode(savedDarkMode);
-    if (savedDarkMode) {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => {
-      const newValue = !prev;
-      localStorage.setItem("darkMode", newValue);
-      if (newValue) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      return newValue;
-    });
-  };
-
   return (
     <ThemeProvider>
-      <div className={`min-h-screen flex flex-col ${isDarkMode ? "dark" : ""}`}>
+      <div className="min-h-screen flex flex-col">
         <ScrollToHash />
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -82,7 +60,7 @@ function App() {
             path="dashBoard"
             element={
               <ProtectedRoute>
-                <Layout isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <Layout />
               </ProtectedRoute>
             }
           >
@@ -93,21 +71,23 @@ function App() {
             path="work"
             element={
               <ProtectedRoute>
-                <Layout isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <Layout />
               </ProtectedRoute>
             }
           >
             <Route index element={<Work />} />
+            <Route path=":id" element={<WorkDetail />} />
           </Route>
            <Route
             path="blog"
             element={
               <ProtectedRoute>
-                <Layout isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <Layout />
               </ProtectedRoute>
             }
           >
             <Route index element={<Blog />} />
+            <Route path=":id" element={<BlogDetail />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

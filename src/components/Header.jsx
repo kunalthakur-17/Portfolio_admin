@@ -10,12 +10,14 @@ import { BsFileText } from "react-icons/bs";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { Moon, Sun, Code2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTheme } from "../contexts/ThemeContext";
 import "./Header.css";
 
-const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
+const Header = ({ collapsed, setCollapsed }) => {
   const user = useSelector((state) => state.loginReducer?.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -103,7 +105,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
 
   return (
     <motion.nav 
-      className={`sticky top-0 z-50 ${isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'} border-b shadow-sm transition-colors duration-300`}
+      className={`sticky top-0 z-50 ${theme.isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'} border-b shadow-sm transition-colors duration-300`}
       initial={{ y: -100 }} 
       animate={{ y: 0 }} 
       transition={{ duration: 0.5 }}
@@ -113,7 +115,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
           {/* Left side - Menu toggle and page title */}
           <div className="flex items-center space-x-4">
             <button
-              className={`p-2 rounded-lg ${isDarkMode ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
+              className={`p-2 rounded-lg ${theme.isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
               onClick={() => setCollapsed(!collapsed)}
             >
               <HiMenuAlt2 size={24} />
@@ -124,11 +126,11 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                 <Code2 size={22} className="text-white" />
               </div>
               <div>
-                <div className={`flex items-center space-x-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                <div className={`flex items-center space-x-2 ${theme.isDark ? 'text-white' : 'text-gray-900'}`}>
                   <span className="text-blue-600">{pageTitle?.icon}</span>
                   <span className="font-bold text-lg">{pageTitle?.title}</span>
                 </div>
-                <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Portfolio Admin</span>
+                <span className={`text-sm ${theme.isDark ? 'text-gray-400' : 'text-gray-500'}`}>Portfolio Admin</span>
               </div>
             </div>
           </div>
@@ -137,18 +139,18 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
           <div className="flex items-center space-x-4">
             {/* Dark mode toggle */}
             <button
-              onClick={toggleDarkMode}
-              className={`p-2 rounded-lg ${isDarkMode ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
+              onClick={theme.toggleTheme}
+              className={`p-2 rounded-lg ${theme.isDark ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
               aria-label="Toggle dark mode"
             >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              {theme.isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
             {/* Notification Bell */}
             <Dropdown align="end">
               <Dropdown.Toggle
                 variant="white"
-                className={`position-relative border-0 shadow-none p-2 rounded-lg ${isDarkMode ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
+                className={`position-relative border-0 shadow-none p-2 rounded-lg ${theme.isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
                 style={{ background: "transparent" }}
               >
                 <i className="bi bi-bell fs-5"></i>
@@ -176,7 +178,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu
-                className={`notification-dropdown ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+                className={`notification-dropdown ${theme.isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
                 style={{
                   minWidth: "360px",
                   maxHeight: "460px",
@@ -192,12 +194,12 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                     top: 0,
                     zIndex: 10,
                     padding: "14px 16px",
-                    borderBottom: `1px solid ${isDarkMode ? '#374151' : '#f0f0f0'}`,
+                    borderBottom: `1px solid ${theme.isDark ? '#374151' : '#f0f0f0'}`,
                     borderRadius: "12px 12px 0 0",
                   }}
-                  className={`d-flex justify-content-between align-items-center ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}
+                  className={`d-flex justify-content-between align-items-center ${theme.isDark ? 'bg-gray-800' : 'bg-white'}`}
                 >
-                  <strong className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`} style={{ fontSize: "15px" }}>
+                  <strong className={`${theme.isDark ? 'text-white' : 'text-gray-900'}`} style={{ fontSize: "15px" }}>
                     Notifications
                   </strong>
 
@@ -220,7 +222,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                 {/* Notification List */}
                 <div style={{ maxHeight: "330px", overflowY: "auto" }}>
                   {notifications.length === 0 ? (
-                    <div className={`text-center py-5 ${isDarkMode ? 'text-gray-400' : 'text-muted'}`}>
+                    <div className={`text-center py-5 ${theme.isDark ? 'text-gray-400' : 'text-muted'}`}>
                       <i
                         className="bi bi-bell-slash"
                         style={{ fontSize: "32px", opacity: 0.4 }}
@@ -243,8 +245,8 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                         }}
                         style={{
                           padding: "14px 16px",
-                          background: notif.read ? (isDarkMode ? '#1f2937' : '#fff') : (isDarkMode ? '#1e3a8a' : '#f5f9ff'),
-                          borderBottom: `1px solid ${isDarkMode ? '#374151' : '#f1f1f1'}`,
+                          background: notif.read ? (theme.isDark ? '#1f2937' : '#fff') : (theme.isDark ? '#1e3a8a' : '#f5f9ff'),
+                          borderBottom: `1px solid ${theme.isDark ? '#374151' : '#f1f1f1'}`,
                           transition: "all 0.2s ease",
                         }}
                         className="notification-item"
@@ -265,7 +267,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                           )}
 
                           <div className="flex-grow-1">
-                            <div className={`mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                            <div className={`mb-1 ${theme.isDark ? 'text-white' : 'text-gray-900'}`}
                               style={{
                                 fontSize: "13px",
                                 fontWeight: 600,
@@ -274,7 +276,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                               {notif.title}
                             </div>
 
-                            <div  className={`mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                            <div  className={`mb-2 ${theme.isDark ? 'text-gray-300' : 'text-gray-600'}`}
                               style={{
                                 fontSize: "12px",
                                 marginTop: "2px",
@@ -286,7 +288,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                             </div>
 
                             <div
-                              className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}
+                              className={theme.isDark ? 'text-gray-400' : 'text-gray-500'}
                               style={{
                                 fontSize: "11px",
                                 marginTop: "4px",
@@ -312,7 +314,7 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                         fontSize: "13px",
                         fontWeight: 600,
                         color: "#e25c6f",
-                        background: isDarkMode ? '#1f2937' : '#fff',
+                        background: theme.isDark ? '#1f2937' : '#fff',
                       }}
                       onClick={() => {
                         setNotifications([]);
@@ -330,18 +332,18 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
             <Dropdown align="end">
               <Dropdown.Toggle
                 variant="white"
-                className={`d-flex align-items-center border-0 shadow-none p-2 rounded-lg ${isDarkMode ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
+                className={`d-flex align-items-center border-0 shadow-none p-2 rounded-lg ${theme.isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200`}
                 style={{ background: "transparent" }}
               >
                 <div className="text-end me-2">
-                  <div className={`fw-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`} style={{ fontSize: "16px" }}>
+                  <div className={`fw-semibold ${theme.isDark ? 'text-white' : 'text-gray-900'}`} style={{ fontSize: "16px" }}>
                     {user?.displayName ||
                       user?.name ||
                       user?.username ||
                       user?.firstName ||
                       "Admin"}
                   </div>
-                  <div className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} style={{ fontSize: "14px" }}>
+                  <div className={`${theme.isDark ? 'text-gray-400' : 'text-gray-500'}`} style={{ fontSize: "14px" }}>
                     Administrator
                   </div>
                 </div>
@@ -355,15 +357,15 @@ const Header = ({ collapsed, setCollapsed, isDarkMode, toggleDarkMode }) => {
                   height="40"
                 />
 
-                <i className={`bi bi-chevron-down ms-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}></i>
+                <i className={`bi bi-chevron-down ms-2 ${theme.isDark ? 'text-gray-400' : 'text-gray-600'}`}></i>
               </Dropdown.Toggle>
 
-              <Dropdown.Menu className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} shadow-lg`}>
+              <Dropdown.Menu className={`${theme.isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} shadow-lg`}>
                 <Dropdown.Divider className="red-dropdown-divider" />
 
                 <Dropdown.Item
                   onClick={handleLogout}
-                  className={`red-dropdown-item logout-item ${isDarkMode ? 'text-red-400 hover:bg-gray-700' : 'text-red-600 hover:bg-red-50'}`}
+                  className={`red-dropdown-item logout-item ${theme.isDark ? 'text-red-400 hover:bg-gray-700' : 'text-red-600 hover:bg-red-50'}`}
                 >
                   Logout
                 </Dropdown.Item>

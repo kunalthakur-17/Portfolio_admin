@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
-import { FiSearch, FiSun, FiMoon, FiEdit2, FiTrash2, FiPlus, FiX, FiExternalLink } from "react-icons/fi";
+import { useState, useEffect } from 'react';
+import { FiSearch, FiEdit2, FiTrash2, FiPlus, FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { ThreeDots } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import Pagination from "../Pagination/Pagination";
-import { useTheme } from "../../../contexts/ThemeContext";
-import { AddModal, EditModal, DeleteModal } from './BlogModals';
 import { 
   getBlogsAction,
   createBlogAction,
@@ -17,6 +15,7 @@ import {
   createBlogResetAction,
   getBlogByIdAction,
 } from "../../../redux/protectedPage/blog/action";
+import { useTheme } from '../../../contexts/ThemeContext';
 
 export default function Blog() {
   const theme = useTheme();
@@ -327,24 +326,6 @@ export default function Blog() {
                     </span>
                   ))}
                 </div>
-
-                <p className={`${theme.colors.textSecondary} leading-relaxed mb-4 line-clamp-3`}>
-                  {post.content}
-                </p>
-
-                <div className="flex justify-between items-center">
-                  <div className={`text-sm ${theme.colors.textMuted}`}>
-                    {new Date(post.createdAt).toLocaleDateString()}
-                  </div>
-                  <motion.button
-                    whileHover={{ x: 4 }}
-                    onClick={() => handleViewBlog(post._id)}
-                    className={`inline-flex items-center gap-2 ${theme.colors.primary} ${theme.colors.primaryHover} font-semibold transition-colors duration-200`}
-                  >
-                    View Blog
-                    <FiExternalLink size={18} />
-                  </motion.button>
-                </div>
               </motion.article>
             ))
           )}
@@ -361,46 +342,6 @@ export default function Blog() {
           />
         </motion.div>
       )}
-
-      {/* Modals */}
-      <AddModal
-        show={show}
-        handleClose={handleClose}
-        formData={formData}
-        handleInputChange={handleInputChange}
-        techInput={techInput}
-        setTechInput={setTechInput}
-        handleAddTechnology={handleAddTechnology}
-        handleRemoveTechnology={handleRemoveTechnology}
-        formErrors={formErrors}
-        handleSubmit={handleSubmit}
-        loading={loading}
-        error={error}
-        theme={theme}
-      />
-
-      <EditModal
-        showEdit={showEdit}
-        handleCloseEdit={handleCloseEdit}
-        editData={editData}
-        handleEditInputChange={handleEditInputChange}
-        editTechInput={editTechInput}
-        setEditTechInput={setEditTechInput}
-        handleAddEditTechnology={handleAddEditTechnology}
-        handleRemoveEditTechnology={handleRemoveEditTechnology}
-        editErrors={editErrors}
-        handleUpdate={handleUpdate}
-        updateBlogReducerLoading={updateBlogReducerLoading}
-        theme={theme}
-      />
-
-      <DeleteModal
-        showDelete={showDelete}
-        handleCloseDelete={handleCloseDelete}
-        handleDelete={handleDelete}
-        deleteBlogReducerLoading={deleteBlogReducerLoading}
-        theme={theme}
-      />
     </motion.div>
   );
 }

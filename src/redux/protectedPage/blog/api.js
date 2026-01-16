@@ -36,9 +36,11 @@ export function createBlogApi(data) {
 }
 
 export function updateBlogApi(data) {
-  return api.update(URL.UpdateBlog, data);
+  const { id, ...updateData } = data;
+  return api.update(`${URL.UpdateBlog}/${id}`, updateData);
 }
 
 export function deleteBlogApi(data) {
-  return api.delete(URL.DeleteBlog, data);
+  const { id } = data;
+  return api.delete(`${URL.DeleteBlog}/${id}`);
 }

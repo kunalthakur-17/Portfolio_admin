@@ -3,14 +3,16 @@ import { Nav } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Code2 } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
 import logoImage from "../assets/images/app_logo.png";
 
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdWork } from "react-icons/md";
 import { BsFileText } from "react-icons/bs";
 
-const Sidebar = ({ collapsed, isDarkMode }) => {
+const Sidebar = ({ collapsed }) => {
   const location = useLocation();
+  const theme = useTheme();
   
   const menuItems = [
     {
@@ -46,14 +48,14 @@ const Sidebar = ({ collapsed, isDarkMode }) => {
       animate={collapsed ? "collapsed" : "expanded"}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={`d-flex flex-column text-white sidebar-sticky ${
-        isDarkMode 
+        theme.isDark 
           ? 'bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-700' 
           : 'bg-gradient-to-b from-blue-600 to-blue-700 border-r border-blue-500'
       }`}
       style={{
         minHeight: "100vh",
         overflowX: "hidden",
-        boxShadow: isDarkMode ? '2px 0 10px rgba(0,0,0,0.3)' : '2px 0 10px rgba(0,0,0,0.1)',
+        boxShadow: theme.isDark ? '2px 0 10px rgba(0,0,0,0.3)' : '2px 0 10px rgba(0,0,0,0.1)',
       }}
     >
       {/* Logo & Brand */}
@@ -65,9 +67,9 @@ const Sidebar = ({ collapsed, isDarkMode }) => {
       >
         <div className="flex items-center justify-center space-x-2">
           <div className={`w-10 h-10 bg-gradient-to-br ${
-            isDarkMode ? 'from-blue-500 to-blue-600' : 'from-white to-gray-100'
+            theme.isDark ? 'from-blue-500 to-blue-600' : 'from-white to-gray-100'
           } rounded-lg flex items-center justify-center shadow-lg`}>
-            <Code2 size={22} className={isDarkMode ? 'text-white' : 'text-blue-600'} />
+            <Code2 size={22} className={theme.isDark ? 'text-white' : 'text-blue-600'} />
           </div>
           {!collapsed && (
             <motion.div
@@ -102,7 +104,7 @@ const Sidebar = ({ collapsed, isDarkMode }) => {
                 title={collapsed ? item.label : ""}
                 className={`d-flex align-items-center mb-2 rounded-lg transition-all duration-300 ${
                   isActive
-                    ? (isDarkMode 
+                    ? (theme.isDark 
                         ? "bg-blue-600 text-white shadow-lg" 
                         : "bg-white text-blue-600 shadow-lg")
                     : "text-white/80 hover:text-white hover:bg-white/10"
@@ -145,7 +147,7 @@ const Sidebar = ({ collapsed, isDarkMode }) => {
                 {isActive && (
                   <motion.div
                     className={`ml-auto w-1 h-6 rounded-full ${
-                      isDarkMode ? 'bg-blue-400' : 'bg-blue-600'
+                      theme.isDark ? 'bg-blue-400' : 'bg-blue-600'
                     }`}
                     layoutId="activeIndicator"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
