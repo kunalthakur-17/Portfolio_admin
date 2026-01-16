@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { toast } from "react-toastify";
+import tokenManager from "../../utils/tokenManager";
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 
@@ -29,9 +30,8 @@ axios.interceptors.response.use(
       case 401:
         message = data?.message || "Unauthorized access";
         if (!window.location.pathname.includes('/login')) {
-          sessionStorage.clear();
-          localStorage.clear();
-          window.location.href = "/login";
+          // Use centralized token manager for consistent handling
+          tokenManager.handleTokenExpired();
         }
         break;
       case 403:
@@ -218,25 +218,8 @@ class APICore {
   };
 
   isUserAuthenticated = () => {
-    const user = this.getLoggedInUser();
-    if (!user || (user && !user.token)) {
-      return false;
-    }
-    const decoded = jwtDecode(user.token);
-    const currentTime = Date.now() / 1000;
-    if (decoded.exp < currentTime) {
-      console.warn("Access token expired !");
-      toast.error(
-        "Your session has expired. Redirecting you to the login page."
-      );
-      sessionStorage.clear();
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 1000);
-      return false;
-    } else {
-      return true;
-    }
+    // Use centralized token manager
+    return tokenManager.isTokenValid();
   };
 
   setLoggedInUser = (session) => {
@@ -264,7 +247,7 @@ class APICore {
 }
 
 /*
-Check if token available in sessionStorage only
+Check if token available in sessionStorage or localStorage only
 */
 let user = getUserFromSession();
 if (user) {
@@ -273,8 +256,8 @@ if (user) {
     setAuthorization(token);
   }
 } else {
-  // Check sessionStorage directly for token
-  const token = sessionStorage.getItem("token");
+  // Check both sessionStorage and localStorage for token
+  const token = sessionStorage.getItem("token") || localStorage.getItem("accessToken");
   if (token) {
     setAuthorization(token);
   }

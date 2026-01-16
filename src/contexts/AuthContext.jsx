@@ -121,8 +121,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     sessionStorage.clear();
-    // Disconnect socket
-    socketService.disconnect();
+    // TODO: Implement socket service disconnect when available
+    // socketService.disconnect();
   };
 
   const value = {

@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
+import SessionWarning from "./SessionWarning";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Layout = () => {
@@ -17,6 +18,7 @@ const Layout = () => {
           collapsed={collapsed} 
           setCollapsed={setCollapsed} 
         />
+        <SessionWarning />
         <div className={`${theme.colors.surfaceSecondary} transition-colors duration-300`}>
           <Outlet />
         </div>
