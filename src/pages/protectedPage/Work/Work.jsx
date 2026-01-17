@@ -31,12 +31,11 @@ export default function Work() {
   const updateWorkReducerLoading = store?.updateWorkReducer?.loading;
   const deleteWorkReducerLoading = store?.deleteWorkReducer?.loading;
   const totalPages = store?.getWorksReducer?.data?.response?.totalPages || 1;
-  const currentPage = store?.getWorksReducer?.data?.response?.currentPage || 1;
+  const currentPage = parseInt(store?.getWorksReducer?.data?.response?.currentPage) || 1;
 
   // Local state
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -86,7 +85,7 @@ export default function Work() {
     setTechInput("");
     setFormErrors({});
     dispatch(createWorkResetAction());
-    dispatch(getWorksAction({ page, limit: 8 }));
+    dispatch(getWorksAction({ page: currentPage, limit: 8 }));
   };
 
   const handleSubmit = () => {
@@ -143,7 +142,7 @@ export default function Work() {
     setEditTechInput("");
     setEditErrors({});
     dispatch(updateWorkResetAction());
-    dispatch(getWorksAction({ page, limit: 8 }));
+    dispatch(getWorksAction({ page: currentPage, limit: 8 }));
   };
 
   const handleUpdate = () => {
@@ -176,7 +175,7 @@ export default function Work() {
     setShowDelete(false);
     setDeleteId(null);
     dispatch(deleteWorkResetAction());
-    dispatch(getWorksAction({ page, limit: 8 }));
+    dispatch(getWorksAction({ page: currentPage, limit: 8 }));
   };
 
   const handleDelete = () => {
@@ -186,7 +185,7 @@ export default function Work() {
   };
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
+    dispatch(getWorksAction({ search, page: newPage, limit: 8 }));
   };
 
   const handleViewProject = (workId) => {
@@ -196,8 +195,8 @@ export default function Work() {
 
   // Effects
   useEffect(() => {
-    dispatch(getWorksAction({ search, page, limit: 8 }));
-  }, [search, page]);
+    dispatch(getWorksAction({ search, page: currentPage, limit: 8 }));
+  }, [search, currentPage]);
 
   useEffect(() => {
     if (data && !loading && !error) {

@@ -31,12 +31,11 @@ export default function Blog() {
   const updateBlogReducerLoading = store?.updateBlogReducer?.loading;
   const deleteBlogReducerLoading = store?.deleteBlogReducer?.loading;
   const totalPages = store?.getBlogsReducer?.data?.response?.totalPages || 1;
-  const currentPage = store?.getBlogsReducer?.data?.response?.currentPage || 1;
+  const currentPage = parseInt(store?.getBlogsReducer?.data?.response?.currentPage) || 1;
 
   // Local state
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -103,7 +102,7 @@ export default function Blog() {
     setTechInput("");
     setFormErrors({});
     dispatch(createBlogResetAction());
-    dispatch(getBlogsAction({ page, limit: 5 }));
+    dispatch(getBlogsAction({ page: currentPage, limit: 5 }));
   };
 
   const handleSubmit = () => {
@@ -157,7 +156,7 @@ export default function Blog() {
     setEditTechInput("");
     setEditErrors({});
     dispatch(updateBlogResetAction());
-    dispatch(getBlogsAction({ page, limit: 5 }));
+    dispatch(getBlogsAction({ page: currentPage, limit: 5 }));
   };
 
   const handleUpdate = () => {
@@ -188,7 +187,7 @@ export default function Blog() {
     setShowDelete(false);
     setDeleteId(null);
     dispatch(deleteBlogResetAction());
-    dispatch(getBlogsAction({ page, limit: 5 }));
+    dispatch(getBlogsAction({ page: currentPage, limit: 5 }));
   };
 
   const handleDelete = () => {
@@ -203,13 +202,13 @@ export default function Blog() {
   };
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
+    dispatch(getBlogsAction({ search, page: newPage, limit: 5 }));
   };
 
   // Effects
   useEffect(() => {
-    dispatch(getBlogsAction({ search, page, limit: 5 }));
-  }, [search, page]);
+    dispatch(getBlogsAction({ search, page: currentPage, limit: 5 }));
+  }, [search, currentPage]);
 
   useEffect(() => {
     if (data && !loading && !error) {
@@ -352,7 +351,7 @@ export default function Blog() {
       )}
 
       {/* Pagination */}
-      {getBlogsReducerData && getBlogsReducerData.length > 5 && (
+      {totalPages > 1 && (
         <motion.div variants={itemVariants} className="mt-8">
           <Pagination
             currentPage={currentPage}

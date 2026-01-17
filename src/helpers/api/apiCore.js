@@ -90,6 +90,16 @@ const setAuthorization = (token) => {
   else delete axios.defaults.headers.common["Authorization"];
 };
 
+/**
+ * Ensures authorization header is set from available tokens
+ */
+const ensureAuthorization = () => {
+  const token = sessionStorage.getItem("token") || localStorage.getItem("accessToken");
+  if (token) {
+    setAuthorization(token);
+  }
+};
+
 const getUserFromSession = () => {
   const user = sessionStorage.getItem(AUTH_SESSION_KEY);
   return user ? (typeof user == "object" ? user : JSON.parse(user)) : null;
@@ -99,6 +109,7 @@ class APICore {
    * Fetches data from given url
    */
   get = (url, params) => {
+    ensureAuthorization();
     let response;
     if (params) {
       var queryString = params
@@ -149,6 +160,7 @@ class APICore {
    * post given data to url
    */
   create = (url, data) => {
+    ensureAuthorization();
     return axios.post(url, data);
   };
 
@@ -156,6 +168,7 @@ class APICore {
    * Updates patch data
    */
   updatePatch = (url, data) => {
+    ensureAuthorization();
     return axios.patch(url, data);
   };
 
@@ -163,6 +176,7 @@ class APICore {
    * Updates data
    */
   update = (url, data) => {
+    ensureAuthorization();
     return axios.put(url, data);
   };
 
@@ -170,6 +184,7 @@ class APICore {
    * Deletes data
    */
   delete = (url, data) => {
+    ensureAuthorization();
     return axios.delete(url, { data });
   };
 
@@ -177,6 +192,7 @@ class APICore {
    * post given data to url with file
    */
   createWithFile = (url, data) => {
+    ensureAuthorization();
     let formData;
 
     // If data is already FormData, use it directly
@@ -203,6 +219,7 @@ class APICore {
    * post given data to url with file
    */
   updateWithFile = (url, data) => {
+    ensureAuthorization();
     const formData = new FormData();
     for (const k in data) {
       formData.append(k, data[k]);
@@ -263,4 +280,4 @@ if (user) {
   }
 }
 
-export { APICore, setAuthorization, getUserFromSession };
+export { APICore, setAuthorization, getUserFromSession, ensureAuthorization };

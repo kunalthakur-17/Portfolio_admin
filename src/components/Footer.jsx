@@ -27,7 +27,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full ${theme.colors.surface} ${theme.colors.textMuted} hover:bg-blue-600 hover:text-white transition-all`}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full ${theme.colors.surface} ${theme.colors.textMuted} ${theme.colors.accentHover} ${theme.colors.primaryHover} transition-all`}
                 >
                   <Icon size={20} />
                 </motion.a>

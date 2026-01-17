@@ -77,3 +77,96 @@ body.dark-mode {
 .dark-mode .section-title {
   color: #f3f4f6;
 }
+
+/* Pagination Styles */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pages-box {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-number {
+  padding: 0.5rem 0.75rem;
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-number:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.page-number.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* Dark Mode Pagination Styles */
+.dark-mode .nav-btn {
+  background-color: #374151;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+
+.dark-mode .nav-btn:hover:not(:disabled) {
+  background-color: #4b5563;
+  border-color: #6b7280;
+}
+
+.dark-mode .page-number {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+
+.dark-mode .page-number:hover {
+  background-color: #374151;
+  border-color: #6b7280;
+}
+
+.dark-mode .page-number.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}

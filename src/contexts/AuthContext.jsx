@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { setAuthorization } from "../helpers/api/apiCore";
 
 const AuthContext = createContext();
 const apiUrl = import.meta.env.VITE_APP_API_URL;
@@ -22,6 +23,8 @@ export const AuthProvider = ({ children }) => {
 
     if (token && userData) {
       const parsedUser = JSON.parse(userData);
+      // Set authorization header for existing session
+      setAuthorization(token);
       setIsAuthenticated(true);
       setUser(parsedUser);
     }
@@ -33,6 +36,8 @@ export const AuthProvider = ({ children }) => {
       
       if (newToken && newUserData) {
         const parsedUser = JSON.parse(newUserData);
+        // Set authorization header for updated session
+        setAuthorization(newToken);
         setIsAuthenticated(true);
         setUser(parsedUser);
       } else {
@@ -76,6 +81,8 @@ export const AuthProvider = ({ children }) => {
             id: userId
           };
           
+          // Set authorization header for future requests
+          setAuthorization(token);
           
           setIsAuthenticated(true);
           setUser(userData);
@@ -93,6 +100,8 @@ export const AuthProvider = ({ children }) => {
             companyId: data.response?.user?.companyId || data.response?.vendor?.companyId || data.response?.staff?.companyId
           };
           
+          // Set authorization header for future requests
+          setAuthorization(token);
           
           setIsAuthenticated(true);
           setUser(userData);
